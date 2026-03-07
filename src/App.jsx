@@ -1,71 +1,28 @@
-import { useState, useEffect } from "react";
-import { getStudents } from "./api";
-import StudentForm from "./components/StudentForm";
-import SearchBar from "./components/SearchBar";
-import StudentTable from "./components/StudentTable";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
+import Layout from "./components/Layout";
+import Dashboard from "./pages/Dashboard";
+import StudentsList from "./pages/StudentsList";
+import AddStudent from "./pages/AddStudent";
+import Login from "./pages/Login";
+
+const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "123456789-abcdefghijklmnopqrstuvwxyz.apps.googleusercontent.com";
 
 export default function App() {
-  const [students, setStudents] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const fetchStudents = async (search = "", department = "") => {
-    setLoading(true);
-    try {
-      const params = {};
-      if (search) params.search = search;
-      if (department) params.department = department;
-
-      const res = await getStudents(params);
-      setStudents(res.data);
-    } catch (err) {
-      console.error("Failed to fetch students", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchStudents();
-  }, []);
-
   return (
-    <div style={styles.container}>
-      <h1 style={styles.heading}>Student Management System</h1>
-
-      <StudentForm onStudentAdded={() => fetchStudents()} />
-
-      <SearchBar
-        onSearch={(search, department) => fetchStudents(search, department)}
-        onReset={() => fetchStudents()}
-      />
-
-      {loading ? (
-        <div style={styles.loading}>Loading...</div>
-      ) : (
-        <StudentTable
-          students={students}
-          onDeleted={() => fetchStudents()}
-        />
-      )}
-    </div>
+    <GoogleOAuthProvider clientId={CLIENT_ID}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="students" element={<StudentsList />} />
+            <Route path="students/add" element={<AddStudent />} />
+            <Route path="*" element={<Dashboard />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </GoogleOAuthProvider>
   );
 }
-
-const styles = {
-  container: {
-    maxWidth: "900px",
-    margin: "auto",
-  },
-  heading: {
-    textAlign: "center",
-    marginBottom: "24px",
-    color: "#333",
-    fontSize: "26px"
-  },
-  loading: {
-    textAlign: "center",
-    padding: "30px",
-    color: "#888",
-    fontSize: "16px"
-  }
-};

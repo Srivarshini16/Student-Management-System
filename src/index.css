@@ -1,3 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --secondary: #f8fafc;
+  --bg: #f1f5f9;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --card-bg: #ffffff;
+  --danger: #ef4444;
+  --danger-hover: #dc2626;
+  --success: #10b981;
+  --sidebar-w: 240px;
+  --header-h: 64px;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --transition: all 0.2s ease-in-out;
+}
+
+.dark {
+  --bg: #0f172a;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border: #334155;
+  --card-bg: #1e293b;
+  --secondary: #1e293b;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,7 +38,212 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background: #f4f6f8;
-  padding: 20px;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: var(--sidebar-w);
+  background-color: var(--card-bg);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: var(--transition);
+}
+
+.sidebar-header {
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: var(--primary);
+  gap: 0.5rem;
+}
+
+.sidebar-nav {
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.nav-item:hover, .nav-item.active {
+  background-color: var(--secondary);
+  color: var(--primary);
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.topbar {
+  height: var(--header-h);
+  background-color: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--text-main);
+}
+
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+}
+
+/* Button & Input styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: var(--transition);
+  font-size: 0.875rem;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+}
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-danger {
+  background-color: var(--danger);
+  color: white;
+}
+.btn-danger:hover {
+  background-color: var(--danger-hover);
+}
+
+.btn-icon {
+  padding: 0.5rem;
+  background: transparent;
+  color: var(--text-muted);
+}
+.btn-icon:hover {
+  background-color: var(--secondary);
+  color: var(--primary);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.form-input, .form-select {
+  padding: 0.625rem 0.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background-color: var(--card-bg);
+  color: var(--text-main);
+  outline: none;
+  font-family: inherit;
+  transition: var(--transition);
+}
+
+.form-input:focus, .form-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+}
+
+/* Auth Card */
+.auth-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: var(--bg);
+}
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+.auth-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.auth-subtitle {
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 0.75rem;
+  background-color: var(--card-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+.google-btn:hover {
+  background-color: var(--secondary);
 }
