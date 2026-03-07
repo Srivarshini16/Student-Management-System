@@ -9,6 +9,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Routes
+const studentRoutes = require('./routes/students');
+app.use('/students', studentRoutes);
+
 // Test route
 app.get('/', (req, res) => {
     res.send('Student Management API is running...');
