@@ -83,25 +83,65 @@ export default function StudentForm({ onStudentAdded }) {
 
 const styles = {
     card: {
-        background: "white", padding: "20px", borderRadius: "8px",
-        boxShadow: "0 2px 6px rgba(0,0,0,0.1)", marginBottom: "24px"
+        background: "white",
+        padding: "32px",
+        borderRadius: "16px",
+        boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+        marginBottom: "32px",
+        border: "1px solid #f1f5f9"
     },
-    title: { marginBottom: "16px", color: "#444", fontSize: "18px" },
-    row: { display: "flex", gap: "12px", flexWrap: "wrap" },
+    title: {
+        marginBottom: "20px",
+        color: "#0f172a",
+        fontSize: "20px",
+        fontWeight: "700"
+    },
+    row: {
+        display: "flex",
+        gap: "16px",
+        flexWrap: "wrap"
+    },
     input: {
-        flex: 1, padding: "10px", border: "1px solid #ccc",
-        borderRadius: "6px", fontSize: "14px", minWidth: "150px"
+        flex: 1,
+        padding: "12px 16px",
+        border: "1px solid #e2e8f0",
+        borderRadius: "10px",
+        fontSize: "14px",
+        minWidth: "200px",
+        backgroundColor: "#f8fafc",
+        transition: "border-color 0.2s, box-shadow 0.2s",
+        outline: "none"
     },
     btn: {
-        padding: "10px 24px", background: "#4CAF50", color: "white",
-        border: "none", borderRadius: "6px", cursor: "pointer", fontSize: "14px"
+        padding: "12px 28px",
+        background: "#2563eb",
+        color: "white",
+        border: "none",
+        borderRadius: "10px",
+        cursor: "pointer",
+        fontSize: "14px",
+        fontWeight: "600",
+        boxShadow: "0 4px 6px -1px rgba(37, 99, 235, 0.2)",
+        transition: "transform 0.1s, background-color 0.2s"
     },
     success: {
-        padding: "10px", borderRadius: "6px", marginBottom: "12px",
-        background: "#d4edda", color: "#155724", fontSize: "14px"
+        padding: "12px 16px",
+        borderRadius: "10px",
+        marginBottom: "20px",
+        background: "#f0fdf4",
+        color: "#166534",
+        fontSize: "14px",
+        fontWeight: "500",
+        border: "1px solid #dcfce7"
     },
     error: {
-        padding: "10px", borderRadius: "6px", marginBottom: "12px",
-        background: "#f8d7da", color: "#721c24", fontSize: "14px"
+        padding: "12px 16px",
+        borderRadius: "10px",
+        marginBottom: "20px",
+        background: "#fef2f2",
+        color: "#991b1b",
+        fontSize: "14px",
+        fontWeight: "500",
+        border: "1px solid #fee2e2"
     }
 };

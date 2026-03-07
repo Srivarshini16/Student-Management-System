@@ -51,21 +51,54 @@ export default function SearchBar({ onSearch, onReset }) {
 
 const styles = {
     card: {
-        background: "white", padding: "16px", borderRadius: "8px",
-        boxShadow: "0 2px 6px rgba(0,0,0,0.1)", marginBottom: "24px"
+        background: "white",
+        padding: "24px",
+        borderRadius: "16px",
+        boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+        marginBottom: "32px",
+        border: "1px solid #f1f5f9"
     },
-    title: { marginBottom: "12px", color: "#444", fontSize: "18px" },
-    row: { display: "flex", gap: "12px", flexWrap: "wrap" },
+    title: {
+        marginBottom: "16px",
+        color: "#0f172a",
+        fontSize: "18px",
+        fontWeight: "700"
+    },
+    row: {
+        display: "flex",
+        gap: "12px",
+        flexWrap: "wrap"
+    },
     input: {
-        flex: 1, padding: "10px", border: "1px solid #ccc",
-        borderRadius: "6px", fontSize: "14px", minWidth: "150px"
+        flex: 1,
+        padding: "10px 16px",
+        border: "1px solid #e2e8f0",
+        borderRadius: "10px",
+        fontSize: "14px",
+        minWidth: "200px",
+        backgroundColor: "#f8fafc",
+        outline: "none"
     },
     btnSearch: {
-        padding: "10px 20px", background: "#2196F3", color: "white",
-        border: "none", borderRadius: "6px", cursor: "pointer", fontSize: "14px"
+        padding: "10px 24px",
+        background: "#2563eb",
+        color: "white",
+        border: "none",
+        borderRadius: "10px",
+        cursor: "pointer",
+        fontSize: "14px",
+        fontWeight: "600",
+        transition: "background-color 0.2s"
     },
     btnReset: {
-        padding: "10px 20px", background: "#888", color: "white",
-        border: "none", borderRadius: "6px", cursor: "pointer", fontSize: "14px"
+        padding: "10px 24px",
+        background: "#f1f5f9",
+        color: "#475569",
+        border: "none",
+        borderRadius: "10px",
+        cursor: "pointer",
+        fontSize: "14px",
+        fontWeight: "600",
+        transition: "background-color 0.2s"
     }
 };

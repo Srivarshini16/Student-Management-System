@@ -35,16 +35,20 @@ router.get('/', async (req, res) => {
         let filter = {};
 
         if (search) {
+            const safeSearch = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
             filter.$or = [
-                { name: { $regex: search, $options: 'i' } },
-                { rollNo: { $regex: search, $options: 'i' } },
-                { department: { $regex: search, $options: 'i' } }
+                { name: { $regex: safeSearch, $options: 'i' } },
+                { rollNo: { $regex: safeSearch, $options: 'i' } },
+                { department: { $regex: safeSearch, $options: 'i' } }
             ];
         }
 
+
         if (department) {
-            filter.department = { $regex: department, $options: 'i' };
+            const safeDept = department.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            filter.department = { $regex: safeDept, $options: 'i' };
         }
+
 
         const students = await Student.find(filter).sort({ createdAt: -1 });
         res.status(200).json(students);

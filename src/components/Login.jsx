@@ -29,25 +29,37 @@ export default function Login({ onLogin }) {
 
 const styles = {
     wrapper: {
-        display: 'flex', justifyContent: 'center',
-        alignItems: 'center', height: '100vh',
-        background: '#f4f6f8'
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)'
     },
     card: {
-        background: 'white', padding: '40px',
-        borderRadius: '12px', textAlign: 'center',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-        width: '360px'
+        background: 'white',
+        padding: '48px',
+        borderRadius: '24px',
+        textAlign: 'center',
+        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        width: '400px',
+        border: '1px solid rgba(255,255,255,0.8)'
     },
     title: {
-        fontSize: '22px', color: '#333',
-        marginBottom: '8px'
+        fontSize: '28px',
+        fontWeight: '800',
+        color: '#0f172a',
+        marginBottom: '12px',
+        letterSpacing: '-0.025em'
     },
     subtitle: {
-        fontSize: '14px', color: '#888',
-        marginBottom: '28px'
+        fontSize: '16px',
+        color: '#64748b',
+        marginBottom: '32px',
+        fontWeight: '500'
     },
     btnWrapper: {
-        display: 'flex', justifyContent: 'center'
+        display: 'flex',
+        justifyContent: 'center',
+        padding: '10px'
     }
 }

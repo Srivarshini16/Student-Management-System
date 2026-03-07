@@ -11,7 +11,10 @@ app.use(express.json());
 
 // Routes
 const studentRoutes = require('./routes/students');
+const attendanceRoutes = require('./routes/attendance');
+
 app.use('/students', studentRoutes);
+app.use('/attendance', attendanceRoutes);
 
 // Test route
 app.get('/', (req, res) => {
