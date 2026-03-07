@@ -1,16 +1,55 @@
-# React + Vite
+# Student Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack web application built with React (Vite) and Node.js (Express) to manage student records.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Add Students**: Register new students with their name, roll number, and department.
+- **Search & Filter**: Find students by name or roll number, or filter by department.
+- **Delete Records**: Remove student records from the database.
+- **Responsive UI**: Built with a clean, modern design.
 
-## React Compiler
+## Prerequisites
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- [Node.js](https://nodejs.org/) installed.
+- [MongoDB](https://www.mongodb.com/atlas/database) account and a connection URI.
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 1. Clone the repository
+```bash
+git clone <repository-url>
+cd Student-Management-System
+```
+
+### 2. Setup the Backend
+Navigate to the `backend` folder:
+```bash
+cd backend
+npm install
+```
+Create a `.env` file in the `backend` folder and add your configuration:
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+```
+Start the backend server:
+```bash
+npm start
+```
+
+### 3. Setup the Frontend
+Navigate back to the root folder:
+```bash
+npm install
+npm run dev
+```
+
+The application will be available at `http://localhost:5173`.
+
+## Tech Stack
+
+- **Frontend**: React, Axios, Vite
+- **Backend**: Node.js, Express
+- **Database**: MongoDB, Mongoose
+- **Styling**: Vanilla CSS (Inline)
