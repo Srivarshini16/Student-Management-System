@@ -5,20 +5,25 @@ const Student = require('../models/Student');
 // POST /students — Add a new student
 router.post('/', async (req, res) => {
     try {
-        const { name, rollNo, department } = req.body;
+        const { name, rollNo, email, department } = req.body;
 
         // Validation
-        if (!name || !rollNo || !department) {
-            return res.status(400).json({ message: 'Name, Roll Number, and Department are all required' });
+        if (!name || !rollNo || !email || !department) {
+            return res.status(400).json({ message: 'Name, Roll Number, Email, and Department are all required' });
         }
 
-        // Check for duplicate roll number
-        const existing = await Student.findOne({ rollNo });
-        if (existing) {
+        // Check for duplicate roll number or email
+        const existingRollNo = await Student.findOne({ rollNo });
+        if (existingRollNo) {
             return res.status(400).json({ message: 'Roll number already exists' });
         }
 
-        const student = new Student({ name, rollNo, department });
+        const existingEmail = await Student.findOne({ email: email.toLowerCase() });
+        if (existingEmail) {
+            return res.status(400).json({ message: 'Email address already exists' });
+        }
+
+        const student = new Student({ name, rollNo, email: email.toLowerCase(), department });
         await student.save();
 
         res.status(201).json({ message: 'Student added successfully', student });
@@ -67,6 +72,42 @@ router.delete('/:id', async (req, res) => {
         }
 
         res.status(200).json({ message: 'Student deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ message: 'Server error', error: err.message });
+    }
+});
+
+// PUT /students/:id — Update student
+router.put('/:id', async (req, res) => {
+    try {
+        const { name, rollNo, email, department } = req.body;
+
+        if (!name || !rollNo || !email || !department) {
+            return res.status(400).json({ message: 'All fields are required' });
+        }
+
+        // Check if roll number or email is changed and if it exists for another student
+        const existingRollNo = await Student.findOne({ rollNo, _id: { $ne: req.params.id } });
+        if (existingRollNo) {
+            return res.status(400).json({ message: 'Roll number already exists' });
+        }
+
+        const existingEmail = await Student.findOne({ email: email.toLowerCase(), _id: { $ne: req.params.id } });
+        if (existingEmail) {
+            return res.status(400).json({ message: 'Email address already exists' });
+        }
+
+        const student = await Student.findByIdAndUpdate(
+            req.params.id,
+            { name, rollNo, email: email.toLowerCase(), department },
+            { new: true, runValidators: true }
+        );
+
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+
+        res.status(200).json({ message: 'Student updated successfully', student });
     } catch (err) {
         res.status(500).json({ message: 'Server error', error: err.message });
     }

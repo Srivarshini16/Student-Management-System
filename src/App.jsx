@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Login from "./components/Login";
 import Home from "./pages/Home";
@@ -7,18 +7,19 @@ import UserProfile from "./pages/UserProfile";
 import { isAdmin } from "./config/admins";
 
 export default function App() {
-  const [user, setUser] = useState(null);
-  const [role, setRole] = useState("user");
-  const navigate = useNavigate();
-
-  useEffect(() => {
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem("user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+  const [role, setRole] = useState(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
       const parsedUser = JSON.parse(savedUser);
-      setUser(parsedUser);
-      setRole(isAdmin(parsedUser.email) ? "admin" : "user");
+      return isAdmin(parsedUser.email) ? "admin" : "user";
     }
-  }, []);
+    return "user";
+  });
+  const navigate = useNavigate();
 
   const handleLogin = (userData) => {
     setUser(userData);

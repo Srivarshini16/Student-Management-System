@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const attendanceSchema = new mongoose.Schema({
     studentEmail: {
         type: String,
-        required: true
+        required: true,
+        index: true
     },
     date: {
         type: Date,

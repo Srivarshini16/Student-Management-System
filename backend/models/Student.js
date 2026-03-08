@@ -12,6 +12,13 @@ const studentSchema = new mongoose.Schema({
         unique: true,
         trim: true
     },
+    email: {
+        type: String,
+        required: [true, 'Email is required'],
+        unique: true,
+        trim: true,
+        lowercase: true
+    },
     department: {
         type: String,
         required: [true, 'Department is required'],

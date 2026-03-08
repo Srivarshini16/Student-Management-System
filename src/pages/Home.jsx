@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getStudents } from "../api";
+import { getStudents, markAttendance } from "../api";
 import StudentForm from "../components/StudentForm";
 import SearchBar from "../components/SearchBar";
 import StudentTable from "../components/StudentTable";
@@ -8,6 +8,7 @@ import StudentTable from "../components/StudentTable";
 export default function Home({ user, role, onLogout }) {
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [editingStudent, setEditingStudent] = useState(null);
     const navigate = useNavigate();
 
     const fetchStudents = async (search = "", department = "") => {
@@ -22,6 +23,19 @@ export default function Home({ user, role, onLogout }) {
             console.error("Failed to fetch students", err);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleMarkAttendance = async (studentEmail, status) => {
+        if (!studentEmail) {
+            alert("No email assigned to this student!");
+            return;
+        }
+        try {
+            await markAttendance({ studentEmail, status });
+        } catch (err) {
+            console.error("Attendance Error:", err);
+            alert("Failed to sync attendance");
         }
     };
 
@@ -41,7 +55,7 @@ export default function Home({ user, role, onLogout }) {
                 </div>
 
                 <div style={styles.userInfo}>
-                    <div style={styles.userText}>
+                    <div className="desktop-only" style={styles.userText}>
                         <div style={styles.userName}>{user.name}</div>
                         <div style={styles.userEmail}>{user.email}</div>
                     </div>
@@ -69,7 +83,14 @@ export default function Home({ user, role, onLogout }) {
             <main style={styles.main}>
                 {role === "admin" ? (
                     <>
-                        <StudentForm onStudentAdded={() => fetchStudents()} />
+                        <StudentForm
+                            editingStudent={editingStudent}
+                            onStudentAdded={() => {
+                                fetchStudents();
+                                setEditingStudent(null);
+                            }}
+                            onCancelEdit={() => setEditingStudent(null)}
+                        />
                         <SearchBar
                             onSearch={(search, department) => fetchStudents(search, department)}
                             onReset={() => fetchStudents()}
@@ -83,6 +104,11 @@ export default function Home({ user, role, onLogout }) {
                             <StudentTable
                                 students={students}
                                 onDeleted={() => fetchStudents()}
+                                onEdit={(student) => {
+                                    setEditingStudent(student);
+                                    window.scrollTo({ top: 0, behavior: "smooth" });
+                                }}
+                                onMarkAttendance={handleMarkAttendance}
                             />
                         )}
                     </>
@@ -160,10 +186,6 @@ const styles = {
     },
     userText: {
         textAlign: "right",
-        display: "none",
-        "@media (min-width: 640px)": {
-            display: "block"
-        }
     },
     userName: {
         fontSize: "14px",

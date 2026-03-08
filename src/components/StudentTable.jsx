@@ -1,6 +1,6 @@
 import { deleteStudent } from "../api";
 
-export default function StudentTable({ students, onDeleted }) {
+export default function StudentTable({ students, onDeleted, onEdit, onMarkAttendance }) {
 
     const handleDelete = async (id) => {
         if (!window.confirm("Are you sure you want to delete this student?")) return;
@@ -8,7 +8,7 @@ export default function StudentTable({ students, onDeleted }) {
         try {
             await deleteStudent(id);
             onDeleted();
-        } catch (err) {
+        } catch {
             alert("Failed to delete student");
         }
     };
@@ -22,14 +22,16 @@ export default function StudentTable({ students, onDeleted }) {
                         <th style={styles.th}>#</th>
                         <th style={styles.th}>Name</th>
                         <th style={styles.th}>Roll Number</th>
+                        <th style={styles.th}>Email Address</th>
                         <th style={styles.th}>Department</th>
-                        <th style={styles.th}>Action</th>
+                        <th style={styles.th}>Daily Attendance</th>
+                        <th style={styles.th}>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {students.length === 0 ? (
                         <tr>
-                            <td colSpan="5" style={styles.noData}>
+                            <td colSpan="7" style={styles.noData}>
                                 No students found
                             </td>
                         </tr>
@@ -37,16 +39,45 @@ export default function StudentTable({ students, onDeleted }) {
                         students.map((s, i) => (
                             <tr key={s._id} style={styles.row}>
                                 <td style={styles.td}>{i + 1}</td>
-                                <td style={styles.td}>{s.name}</td>
+                                <td style={styles.td}>
+                                    <div style={styles.nameCell}>{s.name}</div>
+                                </td>
                                 <td style={styles.td}>{s.rollNo}</td>
+                                <td style={styles.td}>
+                                    <div style={styles.emailCell}>{s.email || "no-email@set.com"}</div>
+                                </td>
                                 <td style={styles.td}>{s.department}</td>
                                 <td style={styles.td}>
-                                    <button
-                                        style={styles.btnDelete}
-                                        onClick={() => handleDelete(s._id)}
-                                    >
-                                        Delete
-                                    </button>
+                                    <div style={styles.attendanceActions}>
+                                        <button
+                                            style={styles.btnPresent}
+                                            onClick={() => onMarkAttendance(s.email, 'Present')}
+                                        >
+                                            P
+                                        </button>
+                                        <button
+                                            style={styles.btnAbsent}
+                                            onClick={() => onMarkAttendance(s.email, 'Absent')}
+                                        >
+                                            A
+                                        </button>
+                                    </div>
+                                </td>
+                                <td style={styles.td}>
+                                    <div style={styles.actions}>
+                                        <button
+                                            style={styles.btnEdit}
+                                            onClick={() => onEdit(s)}
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            style={styles.btnDelete}
+                                            onClick={() => handleDelete(s._id)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))
@@ -114,5 +145,58 @@ const styles = {
         fontSize: "13px",
         fontWeight: "600",
         transition: "all 0.2s ease"
+    },
+    btnEdit: {
+        padding: "8px 16px",
+        background: "#eff6ff",
+        color: "#2563eb",
+        border: "1px solid #dbeafe",
+        borderRadius: "8px",
+        cursor: "pointer",
+        fontSize: "13px",
+        fontWeight: "600",
+        transition: "all 0.2s ease"
+    },
+    actions: {
+        display: "flex",
+        gap: "8px"
+    },
+    attendanceActions: {
+        display: "flex",
+        gap: "4px"
+    },
+    btnPresent: {
+        width: "30px",
+        height: "30px",
+        borderRadius: "6px",
+        border: "1px solid #dcfce7",
+        background: "#f0fdf4",
+        color: "#16a34a",
+        fontWeight: "800",
+        cursor: "pointer",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    btnAbsent: {
+        width: "30px",
+        height: "30px",
+        borderRadius: "6px",
+        border: "1px solid #fee2e2",
+        background: "#fef2f2",
+        color: "#dc2626",
+        fontWeight: "800",
+        cursor: "pointer",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    nameCell: {
+        fontWeight: "700",
+        color: "#1e293b"
+    },
+    emailCell: {
+        fontSize: "13px",
+        color: "#64748b"
     }
 };

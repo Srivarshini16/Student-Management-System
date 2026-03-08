@@ -7,6 +7,7 @@ const API = axios.create({
 // Student APIs
 export const addStudent = (data) => API.post('/students', data);
 export const getStudents = (params) => API.get('/students', { params });
+export const updateStudent = (id, data) => API.put(`/students/${id}`, data);
 export const deleteStudent = (id) => API.delete(`/students/${id}`);
 
 // Attendance APIs

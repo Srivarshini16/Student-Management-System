@@ -40,3 +40,13 @@ select {
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .desktop-only {
+    display: block;
+  }
+}
