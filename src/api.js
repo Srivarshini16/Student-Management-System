@@ -14,3 +14,12 @@ export const deleteStudent = (id) => API.delete(`/students/${id}`);
 export const markAttendance = (data) => API.post('/attendance', data);
 export const getAttendanceReport = () => API.get('/attendance/report');
 export const getStudentAttendance = (email) => API.get(`/attendance/student/${email}`);
+
+// Message APIs
+export const saveMessage = (data) => API.post('/messages', data);
+export const getConversation = (user1, user2) => API.get('/messages/conversation', { params: { user1, user2 } });
+export const getAnnouncements = () => API.get('/messages/announcements');
+export const getContacts = (email) => API.get(`/messages/contacts/${email}`);
+export const uploadFile = (formData) => API.post('/messages/upload', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+});

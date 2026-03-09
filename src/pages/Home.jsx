@@ -67,6 +67,12 @@ export default function Home({ user, role, onLogout }) {
                     />
                     <div style={styles.actions}>
                         <button
+                            style={styles.chatBtn}
+                            onClick={() => navigate('/chat')}
+                        >
+                            Chat
+                        </button>
+                        <button
                             style={styles.profileBtn}
                             onClick={() => navigate(role === "admin" ? "/admin-profile" : "/user-profile")}
                         >
@@ -135,6 +141,16 @@ export default function Home({ user, role, onLogout }) {
 }
 
 const styles = {
+    chatBtn: {
+        padding: "8px 16px",
+        background: "#f1f5f9",
+        color: "#475569",
+        border: "none",
+        borderRadius: "10px",
+        cursor: "pointer",
+        fontSize: "13px",
+        fontWeight: "600"
+    },
     container: {
         maxWidth: "1000px",
         margin: "0 auto",

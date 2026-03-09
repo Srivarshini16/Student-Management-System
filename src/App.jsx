@@ -4,6 +4,7 @@ import Login from "./components/Login";
 import Home from "./pages/Home";
 import AdminProfile from "./pages/AdminProfile";
 import UserProfile from "./pages/UserProfile";
+import ChatPage from "./pages/ChatPage";
 import { isAdmin } from "./config/admins";
 
 export default function App() {
@@ -45,6 +46,7 @@ export default function App() {
       <Route path="/" element={<Home user={user} role={role} onLogout={handleLogout} />} />
       <Route path="/admin-profile" element={<AdminProfile user={user} />} />
       <Route path="/user-profile" element={<UserProfile user={user} />} />
+      <Route path="/chat" element={<ChatPage user={user} role={role} onLogout={handleLogout} />} />
     </Routes>
   );
 }
