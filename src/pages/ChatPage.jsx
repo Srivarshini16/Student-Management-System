@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getContacts } from '../api';
 import socket from '../socket';
@@ -7,13 +7,19 @@ import ChatWindow from '../components/ChatWindow';
 import AnnouncementBoard from '../components/AnnouncementBoard';
 import NotificationBell from '../components/NotificationBell';
 
-export default function ChatPage({ user, role, onLogout }) {
+export default function ChatPage({ user, onLogout }) {
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [contacts, setContacts] = useState([]);
     const [selectedChat, setSelectedChat] = useState(null);
     const [showAnnouncement, setShowAnnouncement] = useState(false);
     const [announcementCount, setAnnouncementCount] = useState(0);
     const navigate = useNavigate();
+
+    // Use a ref so the stable socket listener always sees the latest value
+    const showAnnouncementRef = useRef(false);
+    useEffect(() => {
+        showAnnouncementRef.current = showAnnouncement;
+    }, [showAnnouncement]);
 
     useEffect(() => {
         // Connect socket
@@ -24,7 +30,7 @@ export default function ChatPage({ user, role, onLogout }) {
             email: user.email,
             name: user.name,
             picture: user.picture,
-            role: role
+            role: 'admin'
         });
 
         // Listen for online users
@@ -32,9 +38,9 @@ export default function ChatPage({ user, role, onLogout }) {
             setOnlineUsers(users);
         });
 
-        // Count new announcements
+        // Count new announcements (use ref to avoid stale closure)
         socket.on('receive_announcement', (data) => {
-            if (data.fromEmail !== user.email && !showAnnouncement) {
+            if (data.fromEmail !== user.email && !showAnnouncementRef.current) {
                 setAnnouncementCount(prev => prev + 1);
             }
         });
@@ -85,7 +91,7 @@ export default function ChatPage({ user, role, onLogout }) {
                         <span style={styles.onlineDot} />
                         {onlineUsers.length} online
                     </div>
-                    <NotificationBell currentUser={user} role={role} />
+                    <NotificationBell currentUser={user} role="admin" />
                     {user.picture
                         ? <img src={user.picture} alt="" style={styles.navAvatar} />
                         : <div style={{ ...styles.navAvatar, background: 'linear-gradient(135deg,#6366f1,#8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: '700', fontSize: '13px', borderRadius: '50%' }}>
@@ -93,8 +99,8 @@ export default function ChatPage({ user, role, onLogout }) {
                         </div>
                     }
                     <span style={styles.navName}>{user.name}</span>
-                    <span style={role === 'admin' ? styles.adminBadge : styles.userBadge}>
-                        {role === 'admin' ? '👑 Admin' : '🎓 Student'}
+                    <span style={styles.adminBadge}>
+                        👑 Admin
                     </span>
                     <button style={styles.logoutBtn} onClick={onLogout}>
                         Logout
@@ -114,13 +120,13 @@ export default function ChatPage({ user, role, onLogout }) {
                     onSelectChat={handleSelectChat}
                     onSelectAnnouncement={handleSelectAnnouncement}
                     announcementCount={announcementCount}
-                    role={role}
+                    role="admin"
                 />
 
                 {/* Main Chat Area */}
                 <div style={styles.mainArea}>
                     {showAnnouncement ? (
-                        <AnnouncementBoard currentUser={user} role={role} />
+                        <AnnouncementBoard currentUser={user} role="admin" />
                     ) : (
                         <ChatWindow currentUser={user} selectedChat={selectedChat} />
                     )}

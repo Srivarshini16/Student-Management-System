@@ -29,6 +29,9 @@ app.use('/students', studentRoutes);
 const messageRoutes = require('./routes/messages');
 app.use('/messages', messageRoutes);
 
+const attendanceRoutes = require('./routes/attendance');
+app.use('/attendance', attendanceRoutes);
+
 const authRoutes = require('./routes/auth');
 app.use('/auth', authRoutes);
 

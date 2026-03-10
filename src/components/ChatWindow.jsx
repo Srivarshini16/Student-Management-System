@@ -13,16 +13,18 @@ export default function ChatWindow({ currentUser, selectedChat }) {
         if (!selectedChat) return;
         loadConversation();
 
-        socket.on('receive_message', (data) => {
+        const handleReceiveMessage = (data) => {
             const isRelevant =
                 (data.fromEmail === selectedChat.email && data.toEmail === currentUser.email) ||
                 (data.fromEmail === currentUser.email && data.toEmail === selectedChat.email);
             if (isRelevant) {
                 setMessages(prev => [...prev, data]);
             }
-        });
+        };
 
-        return () => socket.off('receive_message');
+        socket.on('receive_message', handleReceiveMessage);
+
+        return () => socket.off('receive_message', handleReceiveMessage);
     }, [selectedChat]);
 
     useEffect(() => {
@@ -112,7 +114,7 @@ export default function ChatWindow({ currentUser, selectedChat }) {
                     <div>
                         <div style={styles.headerName}>{selectedChat.name}</div>
                         <div style={styles.headerSub}>
-                            {selectedChat.role === 'admin' ? '👑 Admin' : '🎓 Student'}
+                            👑 Admin
                         </div>
                     </div>
                 </div>

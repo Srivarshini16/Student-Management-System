@@ -1,12 +1,13 @@
 import axios from 'axios';
+import { getClerkToken } from './tokenStore';
 
 const API = axios.create({
     baseURL: 'http://localhost:5000'
 });
 
-// Attach JWT token to every request automatically
-API.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token');
+// Attach Clerk JWT to every outgoing request
+API.interceptors.request.use(async (config) => {
+    const token = await getClerkToken();
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }

@@ -122,13 +122,14 @@ router.get('/contacts/:email', async (req, res) => {
         const contactsMap = new Map();
         messages.forEach((msg) => {
             const otherEmail = msg.fromEmail === email ? msg.toEmail : msg.fromEmail;
-            const otherName = msg.fromEmail === email ? msg.toEmail : msg.fromName;
+            const otherName = msg.fromEmail === email ? msg.toEmail : msg.fromName; // fallback to email if no name for recipient
+            const otherPicture = msg.fromEmail !== email ? msg.fromPicture : '';
 
             if (!contactsMap.has(otherEmail)) {
                 contactsMap.set(otherEmail, {
                     email: otherEmail,
                     name: otherName,
-                    picture: msg.fromEmail !== email ? msg.fromPicture : '',
+                    picture: otherPicture,
                     lastMessage: msg.message || (msg.fileName ? `📎 ${msg.fileName}` : ''),
                     lastTime: msg.createdAt,
                     unread: 0

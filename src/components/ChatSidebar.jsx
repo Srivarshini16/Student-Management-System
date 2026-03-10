@@ -1,7 +1,7 @@
 export default function ChatSidebar({
     currentUser, onlineUsers, contacts,
     selectedChat, onSelectChat, onSelectAnnouncement,
-    announcementCount, role
+    announcementCount
 }) {
     return (
         <div style={styles.sidebar}>
@@ -56,7 +56,7 @@ export default function ChatSidebar({
                         <div style={styles.contactInfo}>
                             <div style={styles.contactName}>{user.name}</div>
                             <div style={styles.lastMessage}>
-                                {user.role === 'admin' ? '👑 Admin' : '🎓 Student'}
+                                👑 Admin
                             </div>
                         </div>
                     </div>

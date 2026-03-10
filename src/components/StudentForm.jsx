@@ -41,12 +41,15 @@ export default function StudentForm({ onStudentAdded, editingStudent, onCancelEd
             if (editingStudent) {
                 await updateStudent(editingStudent._id, form);
                 showMessage("Student details updated!", "success");
+                setForm({ name: "", rollNo: "", email: "", department: "" });
+                onStudentAdded();
+                onCancelEdit();
             } else {
                 await addStudent(form);
                 showMessage("New student added successfully!", "success");
+                setForm({ name: "", rollNo: "", email: "", department: "" });
+                onStudentAdded();
             }
-            setForm({ name: "", rollNo: "", email: "", department: "" });
-            onStudentAdded();
         } catch (err) {
             const msg = err.response?.data?.message || "Action failed";
             showMessage(msg, "error");

@@ -5,19 +5,19 @@ import StudentForm from "../components/StudentForm";
 import SearchBar from "../components/SearchBar";
 import StudentTable from "../components/StudentTable";
 
-function Avatar({ user, style }) {
+function Avatar({ user, style, onClick }) {
     if (user.picture) {
-        return <img src={user.picture} alt="avatar" style={style} />;
+        return <img src={user.picture} alt="avatar" style={style} onClick={onClick} />;
     }
     const initials = (user.name || 'U').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
     return (
-        <div style={{ ...style, background: 'linear-gradient(135deg,#6366f1,#8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: '800', borderRadius: '50%', fontSize: style.width === '100px' ? '28px' : '14px' }}>
+        <div onClick={onClick} style={{ ...style, background: 'linear-gradient(135deg,#6366f1,#8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: '800', borderRadius: '50%', fontSize: '14px' }}>
             {initials}
         </div>
     );
 }
 
-export default function Home({ user, role, onLogout }) {
+export default function Home({ user, onLogout }) {
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(false);
     const [editingStudent, setEditingStudent] = useState(null);
@@ -52,8 +52,8 @@ export default function Home({ user, role, onLogout }) {
     };
 
     useEffect(() => {
-        if (role === "admin") fetchStudents();
-    }, [role]);
+        fetchStudents();
+    }, []);
 
     return (
         <div style={styles.container}>
@@ -61,9 +61,7 @@ export default function Home({ user, role, onLogout }) {
             <header style={styles.header}>
                 <div style={styles.brand}>
                     <h1 style={styles.heading}>Student Management System</h1>
-                    <div style={role === "admin" ? styles.adminBadge : styles.userBadge}>
-                        {role === "admin" ? "ADMIN PORTAL" : "STUDENT PORTAL"}
-                    </div>
+                    <div style={styles.adminBadge}>ADMIN PORTAL</div>
                 </div>
 
                 <div style={styles.userInfo}>
@@ -74,7 +72,7 @@ export default function Home({ user, role, onLogout }) {
                     <Avatar
                         user={user}
                         style={styles.avatar}
-                        onClick={() => navigate(role === "admin" ? "/admin-profile" : "/user-profile")}
+                        onClick={() => navigate("/admin-profile")}
                     />
                     <div style={styles.actions}>
                         <button
@@ -85,7 +83,7 @@ export default function Home({ user, role, onLogout }) {
                         </button>
                         <button
                             style={styles.profileBtn}
-                            onClick={() => navigate(role === "admin" ? "/admin-profile" : "/user-profile")}
+                            onClick={() => navigate("/admin-profile")}
                         >
                             Profile
                         </button>
@@ -96,55 +94,35 @@ export default function Home({ user, role, onLogout }) {
                 </div>
             </header>
 
-            {/* Main Content */}
+            {/* Main Content — always admin view */}
             <main style={styles.main}>
-                {role === "admin" ? (
-                    <>
-                        <StudentForm
-                            editingStudent={editingStudent}
-                            onStudentAdded={() => {
-                                fetchStudents();
-                                setEditingStudent(null);
-                            }}
-                            onCancelEdit={() => setEditingStudent(null)}
-                        />
-                        <SearchBar
-                            onSearch={(search, department) => fetchStudents(search, department)}
-                            onReset={() => fetchStudents()}
-                        />
-                        {loading ? (
-                            <div style={styles.loading}>
-                                <div className="spinner"></div>
-                                <span>Syncing records...</span>
-                            </div>
-                        ) : (
-                            <StudentTable
-                                students={students}
-                                onDeleted={() => fetchStudents()}
-                                onEdit={(student) => {
-                                    setEditingStudent(student);
-                                    window.scrollTo({ top: 0, behavior: "smooth" });
-                                }}
-                                onMarkAttendance={handleMarkAttendance}
-                            />
-                        )}
-                    </>
-                ) : (
-                    <div style={styles.welcomeCard}>
-                        <div style={styles.welcomeInfo}>
-                            <Avatar user={user} style={styles.bigAvatar} />
-                            <h2 style={styles.welcomeTitle}>Welcome, {user.name}!</h2>
-                            <p style={styles.welcomeSubtitle}>Manage your attendance and personal academic records.</p>
-                        </div>
-                        <div style={styles.quickActions}>
-                            <button
-                                style={styles.primaryBtn}
-                                onClick={() => navigate("/user-profile")}
-                            >
-                                View My Dashboard →
-                            </button>
-                        </div>
+                <StudentForm
+                    editingStudent={editingStudent}
+                    onStudentAdded={() => {
+                        fetchStudents();
+                        setEditingStudent(null);
+                    }}
+                    onCancelEdit={() => setEditingStudent(null)}
+                />
+                <SearchBar
+                    onSearch={(search, department) => fetchStudents(search, department)}
+                    onReset={() => fetchStudents()}
+                />
+                {loading ? (
+                    <div style={styles.loading}>
+                        <div className="spinner"></div>
+                        <span>Syncing records...</span>
                     </div>
+                ) : (
+                    <StudentTable
+                        students={students}
+                        onDeleted={() => fetchStudents()}
+                        onEdit={(student) => {
+                            setEditingStudent(student);
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                        }}
+                        onMarkAttendance={handleMarkAttendance}
+                    />
                 )}
             </main>
         </div>
@@ -194,16 +172,6 @@ const styles = {
         padding: "2px 8px",
         borderRadius: "4px",
         border: "1px solid #dcfce7",
-        alignSelf: "flex-start"
-    },
-    userBadge: {
-        fontSize: "10px",
-        fontWeight: "700",
-        background: "#eff6ff",
-        color: "#1e40af",
-        padding: "2px 8px",
-        borderRadius: "4px",
-        border: "1px solid #dbeafe",
         alignSelf: "flex-start"
     },
     userInfo: {
@@ -270,50 +238,5 @@ const styles = {
         flexDirection: "column",
         alignItems: "center",
         gap: "12px"
-    },
-    welcomeCard: {
-        background: "white",
-        padding: "60px 40px",
-        borderRadius: "24px",
-        boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
-        textAlign: "center",
-        border: "1px solid #f1f5f9",
-        maxWidth: "600px",
-        margin: "40px auto"
-    },
-    welcomeInfo: {
-        marginBottom: "32px"
-    },
-    bigAvatar: {
-        width: "100px",
-        height: "100px",
-        borderRadius: "50%",
-        marginBottom: "24px",
-        border: "4px solid #eff6ff"
-    },
-    welcomeTitle: {
-        color: "#0f172a",
-        fontSize: "28px",
-        fontWeight: "800",
-        marginBottom: "8px"
-    },
-    welcomeSubtitle: {
-        color: "#64748b",
-        fontSize: "16px"
-    },
-    quickActions: {
-        display: "flex",
-        justifyContent: "center"
-    },
-    primaryBtn: {
-        padding: "14px 32px",
-        background: "#2563eb",
-        color: "white",
-        border: "none",
-        borderRadius: "12px",
-        cursor: "pointer",
-        fontSize: "16px",
-        fontWeight: "700",
-        boxShadow: "0 4px 6px -1px rgba(37, 99, 235, 0.3)"
     }
 };
