@@ -5,27 +5,27 @@ import Home from "./pages/Home";
 import AdminProfile from "./pages/AdminProfile";
 import UserProfile from "./pages/UserProfile";
 import ChatPage from "./pages/ChatPage";
-import { isAdmin } from "./config/admins";
 
 export default function App() {
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem("user");
     return savedUser ? JSON.parse(savedUser) : null;
   });
+
   const [role, setRole] = useState(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
       const parsedUser = JSON.parse(savedUser);
-      return isAdmin(parsedUser.email) ? "admin" : "user";
+      return parsedUser.role || "user";
     }
     return "user";
   });
+
   const navigate = useNavigate();
 
   const handleLogin = (userData) => {
     setUser(userData);
-    const userRole = isAdmin(userData.email) ? "admin" : "user";
-    setRole(userRole);
+    setRole(userData.role || "user");
     localStorage.setItem("user", JSON.stringify(userData));
     navigate("/");
   };
@@ -34,6 +34,7 @@ export default function App() {
     setUser(null);
     setRole("user");
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     navigate("/");
   };
 
@@ -50,4 +51,3 @@ export default function App() {
     </Routes>
   );
 }
-

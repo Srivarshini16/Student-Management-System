@@ -5,6 +5,18 @@ import StudentForm from "../components/StudentForm";
 import SearchBar from "../components/SearchBar";
 import StudentTable from "../components/StudentTable";
 
+function Avatar({ user, style }) {
+    if (user.picture) {
+        return <img src={user.picture} alt="avatar" style={style} />;
+    }
+    const initials = (user.name || 'U').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+    return (
+        <div style={{ ...style, background: 'linear-gradient(135deg,#6366f1,#8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: '800', borderRadius: '50%', fontSize: style.width === '100px' ? '28px' : '14px' }}>
+            {initials}
+        </div>
+    );
+}
+
 export default function Home({ user, role, onLogout }) {
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -59,9 +71,8 @@ export default function Home({ user, role, onLogout }) {
                         <div style={styles.userName}>{user.name}</div>
                         <div style={styles.userEmail}>{user.email}</div>
                     </div>
-                    <img
-                        src={user.picture}
-                        alt="avatar"
+                    <Avatar
+                        user={user}
                         style={styles.avatar}
                         onClick={() => navigate(role === "admin" ? "/admin-profile" : "/user-profile")}
                     />
@@ -121,7 +132,7 @@ export default function Home({ user, role, onLogout }) {
                 ) : (
                     <div style={styles.welcomeCard}>
                         <div style={styles.welcomeInfo}>
-                            <img src={user.picture} alt="avatar" style={styles.bigAvatar} />
+                            <Avatar user={user} style={styles.bigAvatar} />
                             <h2 style={styles.welcomeTitle}>Welcome, {user.name}!</h2>
                             <p style={styles.welcomeSubtitle}>Manage your attendance and personal academic records.</p>
                         </div>

@@ -86,7 +86,12 @@ export default function ChatPage({ user, role, onLogout }) {
                         {onlineUsers.length} online
                     </div>
                     <NotificationBell currentUser={user} role={role} />
-                    <img src={user.picture} alt="" style={styles.navAvatar} />
+                    {user.picture
+                        ? <img src={user.picture} alt="" style={styles.navAvatar} />
+                        : <div style={{ ...styles.navAvatar, background: 'linear-gradient(135deg,#6366f1,#8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: '700', fontSize: '13px', borderRadius: '50%' }}>
+                            {(user.name || 'U').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
+                        </div>
+                    }
                     <span style={styles.navName}>{user.name}</span>
                     <span style={role === 'admin' ? styles.adminBadge : styles.userBadge}>
                         {role === 'admin' ? '👑 Admin' : '🎓 Student'}

@@ -29,6 +29,9 @@ app.use('/students', studentRoutes);
 const messageRoutes = require('./routes/messages');
 app.use('/messages', messageRoutes);
 
+const authRoutes = require('./routes/auth');
+app.use('/auth', authRoutes);
+
 // Test route
 app.get('/', (req, res) => {
     res.send('Student Management API is running...');

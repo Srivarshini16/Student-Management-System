@@ -45,7 +45,12 @@ export default function ChatSidebar({
                         onClick={() => onSelectChat(user)}
                     >
                         <div style={styles.avatarWrapper}>
-                            <img src={user.picture} alt="" style={styles.avatarImg} />
+                            {user.picture
+                                ? <img src={user.picture} alt="" style={styles.avatarImg} />
+                                : <div style={{ ...styles.avatarImg, background: 'linear-gradient(135deg,#6366f1,#8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: '700', fontSize: '14px', borderRadius: '50%' }}>
+                                    {(user.name || 'U').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
+                                </div>
+                            }
                             <span style={styles.onlineDot} />
                         </div>
                         <div style={styles.contactInfo}>

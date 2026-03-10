@@ -2,6 +2,18 @@ import { useEffect, useState } from "react";
 import { getStudentAttendance } from "../api";
 import { useNavigate } from "react-router-dom";
 
+function Avatar({ user }) {
+    if (user.picture) {
+        return <img src={user.picture} alt="avatar" style={styles.avatar} />;
+    }
+    const initials = (user.name || 'U').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+    return (
+        <div style={{ ...styles.avatar, background: 'linear-gradient(135deg,#6366f1,#8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '28px', fontWeight: '800', borderRadius: '50%' }}>
+            {initials}
+        </div>
+    );
+}
+
 export default function UserProfile({ user }) {
     const [attendance, setAttendance] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -31,7 +43,7 @@ export default function UserProfile({ user }) {
             </header>
 
             <div style={styles.card}>
-                <img src={user.picture} alt="avatar" style={styles.avatar} />
+                <Avatar user={user} />
                 <h2 style={styles.name}>{user.name}</h2>
                 <div style={styles.email}>{user.email}</div>
                 <div style={styles.badge}>VERIFIED STUDENT</div>

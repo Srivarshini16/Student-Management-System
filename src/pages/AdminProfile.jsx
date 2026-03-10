@@ -1,5 +1,17 @@
 import { useNavigate } from "react-router-dom";
 
+function Avatar({ user }) {
+    if (user.picture) {
+        return <img src={user.picture} alt="avatar" style={styles.avatar} />;
+    }
+    const initials = (user.name || 'A').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+    return (
+        <div style={{ ...styles.avatar, background: 'linear-gradient(135deg,#6366f1,#8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '32px', fontWeight: '800', borderRadius: '50%' }}>
+            {initials}
+        </div>
+    );
+}
+
 export default function AdminProfile({ user }) {
     const navigate = useNavigate();
 
@@ -14,7 +26,7 @@ export default function AdminProfile({ user }) {
 
             <div style={styles.card}>
                 <div style={styles.profileHeader}>
-                    <img src={user.picture} alt="avatar" style={styles.avatar} />
+                    <Avatar user={user} />
                     <div style={styles.badge}>System Superuser</div>
                 </div>
 
